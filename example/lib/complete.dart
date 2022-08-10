@@ -51,7 +51,7 @@ class _CompletionFormState extends State<CompletionForm> {
         MaterialButton(
           onPressed: () async {
             String complete =
-                await openAI.complete(promptController.text, tokens);
+                await openAI.complete(promptController.text, tokens, engine: "text-davinci-001", temperature: 0.7, topP: 1.0, frequencyPenalty: 0, presencePenalty: 0);
             setState(() {
               generated = complete;
             });

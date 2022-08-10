@@ -23,30 +23,29 @@ class OpenAI {
   String apiKey;
   OpenAI({@required this.apiKey});
 
-  String getUrl(function, [engine]) {
-    List engineList = ['ada', 'babbage', 'curie', 'davinci'];
-
-    String url = 'https://api.openai.com/v1/engines/davinci/$function';
-
-    if (engineList.contains(engine)) {
-      url = 'https://api.openai.com/v1/engines/$engine/$function';
-    }
+  String getUrl(function) {
+    String url = 'https://api.openai.com/v1/$function';
     return url;
   }
 
   Future<String> complete(String prompt, int maxTokens,
-      {num temperature,
+      {String engine,
+      num temperature,
       num topP,
+      num frequencyPenalty,
+      num presencePenalty,
       int n,
       bool stream,
       int logProbs,
-      bool echo,
-      String engine}) async {
+      bool echo}) async {
     String apiKey = this.apiKey;
 
     List data = [];
+    data.add(Param('model', engine));
     data.add(Param('temperature', temperature));
     data.add(Param('top_p', topP));
+    data.add(Param('frequency_penalty', frequencyPenalty));
+    data.add(Param('presence_penalty', presencePenalty));
     data.add(Param('n', n));
     data.add(Param('stream', stream));
     data.add(Param('logprobs', logProbs));
@@ -58,7 +57,7 @@ class OpenAI {
     Map reqData = {...map1, ...map2};
     var response = await http
         .post(
-          getUrl("completions", engine),
+          getUrl("completions"),
           headers: {
             HttpHeaders.authorizationHeader: "Bearer $apiKey",
             HttpHeaders.acceptHeader: "application/json",
@@ -77,7 +76,7 @@ class OpenAI {
     Map reqData = {"documents": documents, "query": query};
     var response = await http
         .post(
-          getUrl("search", engine),
+          getUrl("search"),
           headers: {
             HttpHeaders.authorizationHeader: "Bearer $apiKey",
             HttpHeaders.acceptHeader: "application/json",
