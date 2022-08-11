@@ -23,9 +23,9 @@ class OpenAI {
   String apiKey;
   OpenAI({@required this.apiKey});
 
-  String getUrl(function) {
+  Uri getUrl(function) {
     String url = 'https://api.openai.com/v1/$function';
-    return url;
+    return Uri.parse(url);
   }
 
   Future<String> complete(String prompt, int maxTokens,
