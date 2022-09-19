@@ -10,7 +10,7 @@ class CompletionForm extends StatefulWidget {
 
 class _CompletionFormState extends State<CompletionForm> {
   OpenAI openAI;
-  _CompletionFormState({@required this.openAI});
+  _CompletionFormState({this.openAI});
   final promptController = TextEditingController();
   final tokenController = TextEditingController();
   String generated = "";

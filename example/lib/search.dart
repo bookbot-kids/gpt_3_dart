@@ -10,7 +10,7 @@ class SearchForm extends StatefulWidget {
 
 class _SearchFormState extends State<SearchForm> {
   OpenAI openAI;
-  _SearchFormState({@required this.openAI});
+  _SearchFormState({this.openAI});
   TextEditingController _queryController;
   static List<String> documentsList = [null];
   String response = "";

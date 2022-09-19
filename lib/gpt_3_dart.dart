@@ -1,6 +1,5 @@
 library gpt3_dart;
 
-import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -21,23 +20,23 @@ class Param {
 
 class OpenAI {
   String apiKey;
-  OpenAI({@required this.apiKey});
+  OpenAI({required this.apiKey});
 
   Uri getUrl(function) {
     String url = 'https://api.openai.com/v1/$function';
     return Uri.parse(url);
   }
 
-  Future<String> complete(String prompt, int maxTokens,
-      {String engine,
-      num temperature,
-      num topP,
-      num frequencyPenalty,
-      num presencePenalty,
-      int n,
-      bool stream,
-      int logProbs,
-      bool echo}) async {
+  Future<String?> complete(String prompt, int maxTokens,
+      {String? engine,
+      num? temperature,
+      num? topP,
+      num? frequencyPenalty,
+      num? presencePenalty,
+      int? n,
+      bool? stream,
+      int? logProbs,
+      bool? echo}) async {
     String apiKey = this.apiKey;
 
     List data = [];
@@ -72,7 +71,7 @@ class OpenAI {
     return resp[0]["text"];
   }
 
-  Future<List> search(List documents, String query, {engine}) async {
+  Future<List?> search(List documents, String query, {engine}) async {
     Map reqData = {"documents": documents, "query": query};
     var response = await http
         .post(
@@ -86,7 +85,7 @@ class OpenAI {
         )
         .timeout(const Duration(seconds: 60));
     Map<String, dynamic> map = json.decode(response.body);
-    List<dynamic> resp = map["data"];
+    List<dynamic>? resp = map["data"];
     return resp;
   }
 }
