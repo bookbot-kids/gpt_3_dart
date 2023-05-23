@@ -10,9 +10,9 @@ class SearchForm extends StatefulWidget {
 
 class _SearchFormState extends State<SearchForm> {
   OpenAI openAI;
-  _SearchFormState({this.openAI});
-  TextEditingController _queryController;
-  static List<String> documentsList = [null];
+  _SearchFormState({required this.openAI});
+  late TextEditingController _queryController;
+  static List<String?> documentsList = [null];
   String response = "";
 
   @override
@@ -42,7 +42,7 @@ class _SearchFormState extends State<SearchForm> {
                 controller: _queryController,
                 decoration: InputDecoration(hintText: 'Enter your query'),
                 validator: (v) {
-                  if (v.trim().isEmpty) return 'Please enter something';
+                  if (v?.trim().isNotEmpty != true) return 'Please enter something';
                   return null;
                 },
               ),
@@ -59,10 +59,10 @@ class _SearchFormState extends State<SearchForm> {
               ),
               MaterialButton(
                   onPressed: () async {
-                    List search = await openAI.search(
+                    List? search = await openAI.search(
                         documentsList, _queryController.text);
                     setState(() {
-                      response = search.join(',');
+                      response = search?.join(',') ?? '';
                     });
                   },
                   child: Text('Search'),
@@ -129,7 +129,7 @@ class DocumentTextFields extends StatefulWidget {
 }
 
 class _DocumentTextFieldsState extends State<DocumentTextFields> {
-  TextEditingController _queryController;
+  late TextEditingController _queryController;
 
   @override
   void initState() {
@@ -155,7 +155,7 @@ class _DocumentTextFieldsState extends State<DocumentTextFields> {
       onChanged: (v) => _SearchFormState.documentsList[widget.index] = v,
       decoration: InputDecoration(hintText: 'Enter your document'),
       validator: (v) {
-        if (v.trim().isEmpty) return 'Please enter something';
+        if (v?.trim().isNotEmpty != true) return 'Please enter something';
         return null;
       },
     );

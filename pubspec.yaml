@@ -1,7 +1,6 @@
 name: gpt_3_dart
 description: Unofficial Dart package for OpenAI's GPT-3 API.
 version: 0.0.1
-author: boron
 homepage: https://github.com/boronhub/gpt_3_dart.git
 
 environment:
@@ -11,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.13.5
+  http: ^1.0.0
   meta:
 
 dev_dependencies:

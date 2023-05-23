@@ -3,14 +3,18 @@ import 'package:gpt_3_dart/gpt_3_dart.dart';
 
 class CompletionForm extends StatefulWidget {
   final OpenAI openAI;
+
   CompletionForm(this.openAI);
+
   @override
   _CompletionFormState createState() => _CompletionFormState(openAI: openAI);
 }
 
 class _CompletionFormState extends State<CompletionForm> {
   OpenAI openAI;
-  _CompletionFormState({this.openAI});
+
+  _CompletionFormState({required this.openAI});
+
   final promptController = TextEditingController();
   final tokenController = TextEditingController();
   String generated = "";
@@ -50,10 +54,15 @@ class _CompletionFormState extends State<CompletionForm> {
         SizedBox(height: 15),
         MaterialButton(
           onPressed: () async {
-            String complete =
-                await openAI.complete(promptController.text, tokens, engine: "text-davinci-001", temperature: 0.7, topP: 1.0, frequencyPenalty: 0, presencePenalty: 0);
+            String? complete = await openAI.complete(
+                promptController.text, tokens,
+                engine: "text-davinci-001",
+                temperature: 0.7,
+                topP: 1.0,
+                frequencyPenalty: 0,
+                presencePenalty: 0);
             setState(() {
-              generated = complete;
+              generated = complete ?? '';
             });
           },
           child: Text('Generate'),
