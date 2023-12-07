@@ -23,7 +23,7 @@ class OpenAI {
   OpenAI({required this.apiKey});
 
   Uri getUrl(function) {
-    String url = 'https://api.openai.com/v1/$function';
+    String url = 'https://api.openai.com/v1/chat/$function';
     return Uri.parse(url);
   }
 
@@ -52,7 +52,7 @@ class OpenAI {
     Map map2 =
         Map.fromIterable(data, key: (e) => e.name, value: (e) => e.value);
     map2.removeWhere((key, value) => key == null || value == null);
-    Map map1 = {"prompt": prompt, "max_tokens": maxTokens};
+    Map map1 = {"messages": [{"role": "user", "content": prompt}], "max_tokens": maxTokens};
     Map reqData = {...map1, ...map2};
     var response = await http
         .post(
@@ -68,24 +68,6 @@ class OpenAI {
     Map<String, dynamic> map = json.decode(response.body);
     List<dynamic> resp = map["choices"];
 
-    return resp[0]["text"];
-  }
-
-  Future<List?> search(List documents, String query, {engine}) async {
-    Map reqData = {"documents": documents, "query": query};
-    var response = await http
-        .post(
-          getUrl("search"),
-          headers: {
-            HttpHeaders.authorizationHeader: "Bearer $apiKey",
-            HttpHeaders.acceptHeader: "application/json",
-            HttpHeaders.contentTypeHeader: "application/json",
-          },
-          body: jsonEncode(reqData),
-        )
-        .timeout(const Duration(seconds: 60));
-    Map<String, dynamic> map = json.decode(response.body);
-    List<dynamic>? resp = map["data"];
-    return resp;
+    return resp[0]["message"]["content"];
   }
 }
